@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { connectWallet, getAddress, isSignedIn, signOut, userSession } from './lib/wallet';
 import { CONTRACT_ADDRESS } from './lib/constants';
-import { roGetMarket, callCreateMarket, callStakeYes, callStakeNo, callResolve, callWithdraw, callWithdrawFee } from './lib/contract';
+import { roGetMarket, roGetAdmin, callSetAdmin, fetchCurrentHeight, callCreateMarket, callStakeYes, callStakeNo, callResolve, callWithdraw, callWithdrawFee } from './lib/contract';
 
 function Field(props: { label: string; children: React.ReactNode }) {
   return (
@@ -23,6 +23,7 @@ export default function App() {
   const [resolver, setResolver] = useState<string>(CONTRACT_ADDRESS);
   const [feeBps, setFeeBps] = useState<number>(100);
   const [feeRecipient, setFeeRecipient] = useState<string>(CONTRACT_ADDRESS);
+  const [blockOffset, setBlockOffset] = useState<number>(1000);
 
   // common
   const [marketId, setMarketId] = useState<number>(1);
@@ -35,6 +36,41 @@ export default function App() {
       window.location.reload();
     } catch (e: any) {
       setStatus(e.message || String(e));
+    }
+  };
+
+  const refreshAdmin = async () => {
+    try {
+      const r = await roGetAdmin();
+      // r.ok.value maybe optional-some or none depending on contract; our get-admin returns (ok (optional principal))
+      const v = r?.value;
+      let adminStr = 'none';
+      if (v && v.type === 'ok') {
+        const inner = v.value;
+        if (inner?.type === 'some') adminStr = inner.value?.value || 'none';
+        if (inner?.type === 'none') adminStr = 'none';
+      }
+      setCurrentAdmin(adminStr);
+    } catch (e: any) {
+      setStatus('Failed to fetch admin: ' + (e.message || String(e)));
+    }
+  };
+
+  const onSetAdmin = async () => {
+    if (!addr) return setStatus('Connect wallet first');
+    setStatus('Opening wallet to set admin...');
+    try { await callSetAdmin(addr); setStatus('Set-admin submitted. After confirm, click Refresh Admin.'); }
+    catch (e: any) { setStatus('Set-admin failed: ' + (e.message || String(e))); }
+  };
+
+  const onFetchHeight = async () => {
+    setStatus('Fetching current block height...');
+    try {
+      const h = await fetchCurrentHeight();
+      setDeadline(h + blockOffset);
+      setStatus('Height fetched. Deadline set to ' + (h + blockOffset) + ' (current ' + h + ' + offset ' + blockOffset + ')');
+    } catch (e: any) {
+      setStatus('Fetch height failed: ' + (e.message || String(e)));
     }
   };
 
@@ -80,6 +116,7 @@ export default function App() {
 
   const [inspectId, setInspectId] = useState<number>(1);
   const [inspectData, setInspectData] = useState<any>(null);
+  const [currentAdmin, setCurrentAdmin] = useState<string>('unknown');
   const onInspect = async () => {
     setStatus('Fetching market...');
     try {
@@ -110,6 +147,31 @@ export default function App() {
 
       <main className="container">
         <div className="grid">
+          <section className="card">
+            <h3>Admin & Height</h3>
+            <div className="row">
+              <Field label="Current admin">
+                <div className="kv"><b>{currentAdmin}</b></div>
+              </Field>
+              <div>
+                <div className="kv"><b>&nbsp;</b></div>
+                <button className="btn" onClick={refreshAdmin}>Refresh Admin</button>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button className="btn" onClick={onSetAdmin} disabled={!authed}>Set Admin = Connected</button>
+            </div>
+            <hr style={{ margin: '14px 0', border: 0, borderTop: '1px solid var(--border)' }} />
+            <div className="row">
+              <Field label="Block offset">
+                <input className="input" type="number" value={blockOffset} onChange={e => setBlockOffset(Number(e.target.value))} />
+              </Field>
+              <div>
+                <div className="kv"><b>&nbsp;</b></div>
+                <button className="btn" onClick={onFetchHeight}>Fetch current height → set deadline</button>
+              </div>
+            </div>
+          </section>
           <section className="card">
             <h3>Create Market</h3>
             <Field label="Question">

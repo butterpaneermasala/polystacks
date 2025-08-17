@@ -6,6 +6,43 @@ async function openCall(options: any): Promise<void> {
   return mod.openContractCall(options);
 }
 
+export async function roGetAdmin() {
+  const callRO: any = (tx as any).callReadOnlyFunction || (tx as any).fetchCallReadOnlyFunction;
+  if (!callRO) throw new Error('No read-only function available in @stacks/transactions');
+  const res = await callRO({
+    contractAddress: CONTRACT_ADDRESS,
+    contractName: CONTRACT_NAME,
+    functionName: 'get-admin',
+    functionArgs: [],
+    network: NETWORK,
+    senderAddress: CONTRACT_ADDRESS,
+  });
+  return tx.cvToJSON(res);
+}
+
+export function callSetAdmin(newAdmin: string): Promise<void> {
+  return openCall({
+    network: NETWORK,
+    contractAddress: CONTRACT_ADDRESS,
+    contractName: CONTRACT_NAME,
+    functionName: 'set-admin',
+    functionArgs: [tx.standardPrincipalCV(newAdmin)],
+    postConditionMode: tx.PostConditionMode.Deny,
+    onFinish: () => {},
+    onCancel: () => { throw new Error('User canceled'); },
+  });
+}
+
+export async function fetchCurrentHeight(): Promise<number> {
+  const url = 'https://api.testnet.hiro.so/extended/v1/block?limit=1';
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Failed to fetch height');
+  const j = await r.json();
+  const h = j?.results?.[0]?.height;
+  if (typeof h !== 'number') throw new Error('Invalid height response');
+  return h;
+}
+
 export async function roGetMarket(id: number) {
   const callRO: any = (tx as any).callReadOnlyFunction || (tx as any).fetchCallReadOnlyFunction;
   if (!callRO) throw new Error('No read-only function available in @stacks/transactions');

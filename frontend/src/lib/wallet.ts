@@ -1,4 +1,5 @@
-import { AppConfig, UserSession, showConnect } from '@stacks/connect';
+import { AppConfig, UserSession } from '@stacks/auth';
+import { showConnect } from '@stacks/connect';
 
 const appConfig = new AppConfig(['store_write', 'publish_data']);
 export const userSession = new UserSession({ appConfig });
@@ -20,7 +21,7 @@ export function connectWallet() {
   return new Promise<void>((resolve, reject) => {
     showConnect({
       userSession,
-      appDetails: { name: 'Polystacks', icon: window.location.origin + '/favicon.ico' },
+      appDetails: { name: 'Polystacks', icon: window.location.origin + '/favicon.svg' },
       onFinish: () => resolve(),
       onCancel: () => reject(new Error('User canceled connect')),
     });
