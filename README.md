@@ -7,8 +7,9 @@ A Clarity v3.2 prediction market-style smart contract with tests and deployment 
 - Clarity version: 3
 
 <!-- Frontend UI screenshot -->
+<sub>frontend ui.</sub>
 <p align="center">
-  <img src="frontend/screenshot-ui.png" alt="Polystacks frontend UI" width="900" />
+  <img src=image-1.png alt="Polystacks frontend UI" width="900" />
   
 </p>
 <sub>Save your screenshot as <code>frontend/screenshot-ui.png</code> to update this image.</sub>
@@ -41,8 +42,10 @@ Limitations (by design for MVP):
 ### Block Explorer
 - Hiro Explorer: https://explorer.hiro.so/txid/ST3JY6NFBQY89NCKPDCDX9NZZ7D4VPSEY7N0NRXEK.polystacks?chain=testnet
 
-### Assets
-- Frontend screenshot reference: `frontend/screenshot-ui.png` (add/replace this file to update the image shown above)
+<p align="center">
+  <img src=image.png alt="Polystacks frontend UI" width="900" />
+  
+</p>
 
 ## Public Functions
 - `set-admin(principal)`
