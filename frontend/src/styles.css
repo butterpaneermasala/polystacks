@@ -1,0 +1,49 @@
+/* Minimal clean theme inspired by the example screenshot */
+:root {
+  --bg: #f6f6f6;
+  --panel: #ffffff;
+  --border: #e6e6e6;
+  --text: #1f1f1f;
+  --muted: #666;
+  --accent: #111;
+  --accent-2: #d1d5db;
+}
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: repeating-linear-gradient( to bottom, var(--bg), var(--bg) 28px, #f1f1f1 28px, #f1f1f1 56px );
+  color: var(--text);
+}
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  position: sticky; top: 0; z-index: 10;
+}
+.brand { font-weight: 800; letter-spacing: 1px; }
+.container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+}
+.card h3 { margin: 0 0 8px 0; }
+.input, .select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+.row { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--accent-2);
+  background: #fff; color: var(--accent); font-weight: 600; cursor: pointer;
+}
+.btn.primary { background: #111; color: #fff; border-color: #111; }
+.btn.full { width: 100%; }
+.badge { display:inline-block; padding: 2px 8px; border:1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: 12px; }
+.kv { font-size: 12px; color: var(--muted); }
+.kv b { color: var(--text); }
+.footer { text-align: center; color: var(--muted); padding: 30px; font-size: 12px; }
+.status { font-size: 12px; color: var(--muted); margin-top: 8px; min-height: 16px; white-space: pre-wrap; }
