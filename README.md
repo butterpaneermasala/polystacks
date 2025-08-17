@@ -6,7 +6,12 @@ A Clarity v3.2 prediction market-style smart contract with tests and deployment 
 - Contract: `ST3JY6NFBQY89NCKPDCDX9NZZ7D4VPSEY7N0NRXEK.polystacks`
 - Clarity version: 3
 
-![alt text](image.png)
+<!-- Frontend UI screenshot -->
+<p align="center">
+  <img src="frontend/screenshot-ui.png" alt="Polystacks frontend UI" width="900" />
+  
+</p>
+<sub>Save your screenshot as <code>frontend/screenshot-ui.png</code> to update this image.</sub>
 
 ## Overview
 Polystacks lets an admin create markets with a question, deadline, resolver, and fee settings. Users can stake on Yes/No. After the deadline, the resolver sets the outcome. Winners can withdraw their stake plus proportional winnings. The fee recipient can withdraw protocol fees.
@@ -37,7 +42,7 @@ Limitations (by design for MVP):
 - Hiro Explorer: https://explorer.hiro.so/txid/ST3JY6NFBQY89NCKPDCDX9NZZ7D4VPSEY7N0NRXEK.polystacks?chain=testnet
 
 ### Assets
-- A PNG image has been added and referenced above in this README: `![alt text](image.png)`
+- Frontend screenshot reference: `frontend/screenshot-ui.png` (add/replace this file to update the image shown above)
 
 ## Public Functions
 - `set-admin(principal)`
