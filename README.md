@@ -12,7 +12,6 @@ A Clarity v3.2 prediction market-style smart contract with tests and deployment 
   <img src=image-1.png alt="Polystacks frontend UI" width="900" />
   
 </p>
-<sub>Save your screenshot as <code>frontend/screenshot-ui.png</code> to update this image.</sub>
 
 ## Overview
 Polystacks lets an admin create markets with a question, deadline, resolver, and fee settings. Users can stake on Yes/No. After the deadline, the resolver sets the outcome. Winners can withdraw their stake plus proportional winnings. The fee recipient can withdraw protocol fees.
